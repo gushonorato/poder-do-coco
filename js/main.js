@@ -12,6 +12,18 @@ import { EndingScene } from './scenes/ending.js';
 const STEP = 1 / 60;
 const SAVE_KEY = 'pdc_save';
 
+// Celular/tablet? Vários sinais, porque cada navegador expõe coisas diferentes.
+function detectTouch() {
+  const mq = (q) => window.matchMedia && matchMedia(q).matches;
+  return (
+    mq('(pointer: coarse)') ||
+    mq('(any-pointer: coarse)') ||
+    (navigator.maxTouchPoints || 0) > 0 ||
+    'ontouchstart' in window ||
+    /Android|iPhone|iPad|iPod|Mobile|Silk|Kindle|Opera Mini/i.test(navigator.userAgent)
+  );
+}
+
 const root = document.getElementById('game');
 const screen = document.getElementById('screen');
 const sctx = screen.getContext('2d');
@@ -20,7 +32,7 @@ const $ = (sel) => root.querySelector(sel);
 const game = {
   viewW: 320,
   viewH: VIEW_H,
-  touch: matchMedia('(pointer: coarse)').matches || 'ontouchstart' in window,
+  touch: detectTouch(),
   vcanvas: null,
   vctx: null,
   scene: null,
@@ -169,7 +181,16 @@ function resize() {
   }
   const portrait = game.touch && h > w;
   $('#rotate').hidden = !portrait;
-  if (portrait) game.pause(true);
+  if (portrait) {
+    if (!game.paused && game.scene instanceof PlayScene) {
+      game.pause(true);
+      game.pausedByRotate = true;
+    }
+  } else if (game.pausedByRotate) {
+    // voltou para a horizontal: continua o jogo sozinho
+    game.pausedByRotate = false;
+    game.pause(false);
+  }
 }
 
 function blit() {
@@ -252,6 +273,16 @@ async function boot() {
       else audio.pause();
     } else if (!game.paused) audio.resume();
   });
+  // Primeiro toque na tela: garante que os botões de celular apareçam.
+  const becomeTouch = () => {
+    if (game.touch) return;
+    game.touch = true;
+    updateControls();
+    resize();
+  };
+  window.addEventListener('touchstart', becomeTouch, { passive: true });
+  window.addEventListener('pointerdown', (e) => e.pointerType === 'touch' && becomeTouch(), { passive: true });
+
   // Qualquer toque libera o áudio (política dos navegadores).
   root.addEventListener('pointerup', () => audio.unlock(), { passive: true });
   window.addEventListener('keydown', () => audio.unlock(), { once: false });
