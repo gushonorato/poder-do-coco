@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Teste de cenários</title>
+<style>
+  body { margin: 0; padding: 8px; background: #1b1b22; color: #eee; font: 14px monospace; }
+  canvas { display: block; image-rendering: pixelated; margin: 4px 0 12px; }
+  .lbl { margin-top: 4px; }
+</style>
+</head>
+<body>
+<script type="module">
+import { createBackground } from '../js/gfx/backgrounds.js';
+import { createTiles } from '../js/gfx/tiles.js';
+
+const q = new URLSearchParams(location.search);
+const theme = q.get('theme') || 'esplanada';
+const W = +(q.get('w') || 390);
+const H = 180;
+const SCALE = +(q.get('scale') || 3);
+const time = +(q.get('t') || 1.5);
+const cams = (q.get('cams') || '0,700,1900').split(',').map(Number);
+const ground = q.get('ground') !== '0';
+
+const bg = createBackground(theme, W, H);
+const tiles = createTiles(theme);
+
+function view(label, camX, opts = {}) {
+  const lbl = document.createElement('div');
+  lbl.className = 'lbl';
+  lbl.textContent = label;
+  document.body.appendChild(lbl);
+  const c = document.createElement('canvas');
+  c.width = W; c.height = H;
+  c.style.width = W * SCALE + 'px';
+  c.style.height = H * SCALE + 'px';
+  document.body.appendChild(c);
+  const ctx = c.getContext('2d');
+  ctx.imageSmoothingEnabled = false;
+  bg.draw(ctx, camX, time, { ...opts, tintLater: true });
+  if (ground) {
+    const off = -((camX % 16) + 16) % 16;
+    for (let x = off; x < W; x += 16) {
+      ctx.drawImage(tiles.top, x, 148);
+      ctx.drawImage(tiles.fill, x, 164);
+    }
+    // plataforma de 3 tiles e um bloco no chão
+    for (let i = 0; i < 3; i++) ctx.drawImage(tiles.platform, 120 + i * 16, 100);
+    ctx.drawImage(tiles.block, 260, 132);
+    ctx.drawImage(tiles.block, 276, 132);
+    ctx.drawImage(tiles.block, 276, 116);
+  }
+  bg.tint(ctx, time, opts);
+}
+
+if (theme === 'intro') {
+  view('intro dark=0', 0, { dark: 0 });
+  view('intro dark=0.6', 0, { dark: 0.6 });
+  view('intro dark=1 flash', 0, { dark: 1, flash: q.get('flash') !== '0' });
+} else {
+  for (const cx of cams) view(`${theme} camX=${cx}`, cx);
+}
+
+// tiles ampliados
+const lbl = document.createElement('div');
+lbl.textContent = 'tiles: top, fill, platform, block, topLeft, topRight (8x) + montagem';
+document.body.appendChild(lbl);
+const tc = document.createElement('canvas');
+tc.width = 6 * 18 + 80; tc.height = 48;
+tc.style.width = tc.width * 6 + 'px';
+tc.style.height = tc.height * 6 + 'px';
+document.body.appendChild(tc);
+const tctx = tc.getContext('2d');
+tctx.fillStyle = '#88aacc';
+tctx.fillRect(0, 0, tc.width, tc.height);
+['top', 'fill', 'platform', 'block', 'topLeft', 'topRight'].forEach((k, i) => tctx.drawImage(tiles[k], i * 18, 0));
+// montagem: 5 de largura, top + 2 fill, com bordas
+const mx = 6 * 18 + 2;
+for (let i = 0; i < 4; i++) {
+  const t = i === 0 ? tiles.topLeft : i === 3 ? tiles.topRight : tiles.top;
+  tctx.drawImage(t, mx + i * 16, 0);
+  tctx.drawImage(tiles.fill, mx + i * 16, 16);
+  tctx.drawImage(tiles.fill, mx + i * 16, 32);
+}
+document.title = 'ok';
+</script>
+</body>
+</html>

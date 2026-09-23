@@ -1,0 +1,159 @@
+{
+ "miguel": {
+  "cellW": 128,
+  "cellH": 184,
+  "frames": [
+   "walk0",
+   "walk1",
+   "walk2",
+   "walk3",
+   "walk4",
+   "walk5",
+   "walk6",
+   "walk7",
+   "idle0",
+   "idle1",
+   "blink",
+   "idle3",
+   "stand0",
+   "stand1",
+   "jump",
+   "fall",
+   "hurt",
+   "victory0",
+   "victory1",
+   "thumbs",
+   "force0",
+   "force1",
+   "force2",
+   "force3"
+  ],
+  "scale": 4
+ },
+ "herica": {
+  "cellW": 144,
+  "cellH": 220,
+  "frames": [
+   "walk0",
+   "walk1",
+   "walk2",
+   "walk3",
+   "walk4",
+   "walk5",
+   "walk6",
+   "walk7",
+   "step0",
+   "step1",
+   "scared0",
+   "scared1",
+   "cheer",
+   "hug",
+   "idle0"
+  ],
+  "scale": 4
+ },
+ "portrait": {
+  "cellW": 160,
+  "cellH": 228,
+  "frames": [
+   "closed",
+   "half",
+   "open"
+  ],
+  "scale": 4
+ },
+ "simba": {
+  "cellW": 152,
+  "cellH": 136,
+  "frames": [
+   "run0",
+   "run1",
+   "run2",
+   "run3",
+   "run4",
+   "run5",
+   "run6",
+   "run7",
+   "gallop0",
+   "gallop1",
+   "gallop2",
+   "gallop3",
+   "bark",
+   "jump",
+   "idle0",
+   "idle1",
+   "sad"
+  ],
+  "scale": 4
+ },
+ "rolha": {
+  "cellW": 252,
+  "cellH": 344,
+  "frames": [
+   "idle0",
+   "idle1",
+   "squash",
+   "jump",
+   "throw",
+   "hurt"
+  ],
+  "scale": 4
+ },
+ "constipador": {
+  "cellW": 304,
+  "cellH": 372,
+  "frames": [
+   "float0",
+   "float1",
+   "laugh0",
+   "laugh1",
+   "attack",
+   "hurt"
+  ],
+  "scale": 4
+ },
+ "minions": {
+  "cellW": 140,
+  "cellH": 108,
+  "frames": [
+   "salg0",
+   "salg1",
+   "refri0",
+   "refri1",
+   "cookie_idle",
+   "cookie_jump",
+   "pizza0",
+   "pizza1"
+  ],
+  "scale": 4
+ },
+ "items": {
+  "cellW": 168,
+  "cellH": 188,
+  "frames": [
+   "apple",
+   "water",
+   "broccoli",
+   "papaya",
+   "plum",
+   "orange",
+   "pear",
+   "watermelon",
+   "soda",
+   "pizza",
+   "burger",
+   "fries",
+   "chocolate",
+   "candy",
+   "poop",
+   "poopBig",
+   "poopPile",
+   "fart",
+   "heart",
+   "heartEmpty",
+   "flag",
+   "star"
+  ],
+  "scale": 4
+ }
+}

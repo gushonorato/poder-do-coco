@@ -1,0 +1,218 @@
+:root {
+  --btn: min(24vh, 22vw, 124px);
+  --btn-big: min(30vh, 26vw, 150px);
+  --ink: #2a1a14;
+  --gold: #ffe08a;
+  --bg: #140a1f;
+  --safe-l: env(safe-area-inset-left, 0px);
+  --safe-r: env(safe-area-inset-right, 0px);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  font-family: "Trebuchet MS", "Arial Rounded MT Bold", "Nunito", system-ui, sans-serif;
+}
+
+#game {
+  position: fixed;
+  inset: 0;
+}
+
+#screen {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  image-rendering: pixelated;
+}
+
+/* ------------------------------------------------ controles de toque */
+#controls {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+#controls[hidden], #topbar[hidden], #menu[hidden], #rotate[hidden], #btn-skip[hidden] { display: none; }
+
+.btn {
+  pointer-events: auto;
+  touch-action: none;
+  width: var(--btn);
+  height: var(--btn);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.16);
+  border: 3px solid rgba(255, 255, 255, 0.55);
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.25);
+  transition: transform 60ms, background 60ms;
+}
+.btn svg {
+  width: 52%;
+  height: 52%;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 3.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 2px 0 rgba(0, 0, 0, 0.35));
+}
+.btn.on {
+  background: rgba(255, 255, 255, 0.42);
+  transform: scale(0.93);
+}
+
+#pad-move {
+  pointer-events: auto;
+  touch-action: none;
+  position: absolute;
+  left: calc(var(--safe-l) + 2.5vw);
+  bottom: calc(var(--safe-b) + 4vh);
+  display: flex;
+  gap: 3vh;
+  padding: 2vh;
+  margin: -2vh;
+}
+#pad-move .btn { pointer-events: none; }
+
+#pad-action {
+  position: absolute;
+  right: calc(var(--safe-r) + 2.5vw);
+  bottom: calc(var(--safe-b) + 4vh);
+  display: flex;
+  align-items: flex-end;
+  gap: 3vh;
+}
+.btn.jump { margin-bottom: calc(var(--btn) * 0.55); }
+.btn.poop {
+  width: var(--btn-big);
+  height: var(--btn-big);
+  background: rgba(138, 79, 36, 0.55);
+  border-color: rgba(255, 224, 138, 0.9);
+}
+.btn.poop span {
+  font-size: calc(var(--btn-big) * 0.5);
+  line-height: 1;
+  filter: drop-shadow(0 3px 0 rgba(0, 0, 0, 0.35));
+}
+.btn.poop.on { background: rgba(138, 79, 36, 0.85); }
+.btn.poop.hint { animation: hint 0.7s ease-in-out infinite alternate; }
+@keyframes hint {
+  from { box-shadow: 0 0 0 0 rgba(255, 224, 138, 0.9); transform: scale(1); }
+  to { box-shadow: 0 0 0 16px rgba(255, 224, 138, 0); transform: scale(1.1); }
+}
+
+/* ------------------------------------------------ barra do topo */
+#topbar {
+  position: absolute;
+  top: calc(env(safe-area-inset-top, 0px) + 2vh);
+  right: calc(var(--safe-r) + 2vw);
+  display: flex;
+  gap: 1.5vh;
+}
+#topbar button, #btn-skip {
+  font: 700 clamp(14px, 4.5vh, 22px) / 1 "Trebuchet MS", system-ui, sans-serif;
+  color: #fff;
+  background: rgba(20, 10, 31, 0.55);
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  border-radius: 10px;
+  min-width: clamp(40px, 11vh, 56px);
+  height: clamp(40px, 11vh, 56px);
+  padding: 0 10px;
+}
+#btn-skip {
+  position: absolute;
+  top: calc(env(safe-area-inset-top, 0px) + 2vh);
+  right: calc(var(--safe-r) + 2vw);
+  letter-spacing: 1px;
+}
+
+/* ------------------------------------------------ menus */
+#menu {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--safe-b) + 8vh);
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.2vh;
+}
+.menu-title {
+  font-weight: 900;
+  font-size: clamp(22px, 9vh, 46px);
+  color: var(--gold);
+  text-shadow: 3px 3px 0 var(--ink);
+  margin-bottom: 2vh;
+  letter-spacing: 2px;
+}
+.menu-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  font-weight: 900;
+  font-size: clamp(18px, 7.5vh, 34px);
+  letter-spacing: 1px;
+  color: var(--ink);
+  background: var(--gold);
+  border: 4px solid var(--ink);
+  border-radius: 14px;
+  padding: 0.35em 1.4em;
+  box-shadow: 0 6px 0 var(--ink);
+  cursor: pointer;
+  animation: bounce 1.2s ease-in-out infinite;
+}
+.menu-btn.small {
+  font-size: clamp(14px, 5vh, 24px);
+  background: #fff;
+  animation: none;
+}
+.menu-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--ink); }
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+/* ------------------------------------------------ gire o celular */
+#rotate {
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  font-weight: 900;
+  font-size: 24px;
+  text-align: center;
+  z-index: 10;
+}
+#rotate .phone {
+  width: 70px;
+  height: 120px;
+  border: 5px solid #fff;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  font-size: 32px;
+  animation: rot 2s ease-in-out infinite;
+}
+@keyframes rot {
+  0%, 30% { transform: rotate(0deg); }
+  60%, 100% { transform: rotate(-90deg); }
+}

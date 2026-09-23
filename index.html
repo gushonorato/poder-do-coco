@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#140a1f">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Poder do Cocô">
+  <meta name="description" content="Miguel precisa fazer cocô nos monstros para salvar a mamãe e o Simba!">
+  <title>Poder do Cocô</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" href="assets/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="assets/icons/icon-180.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="game">
+    <canvas id="screen"></canvas>
+
+    <div id="controls" hidden>
+      <div id="pad-move" aria-label="andar">
+        <div class="btn left" aria-label="esquerda">
+          <svg viewBox="0 0 24 24"><path d="M15 4 L7 12 L15 20" /></svg>
+        </div>
+        <div class="btn right" aria-label="direita">
+          <svg viewBox="0 0 24 24"><path d="M9 4 L17 12 L9 20" /></svg>
+        </div>
+      </div>
+      <div id="pad-action">
+        <div class="btn jump" aria-label="pular">
+          <svg viewBox="0 0 24 24"><path d="M4 15 L12 7 L20 15" /></svg>
+        </div>
+        <div class="btn poop" aria-label="fazer cocô"><span>💩</span></div>
+      </div>
+    </div>
+
+    <div id="topbar" hidden>
+      <button id="btn-mute" aria-label="som">🔊</button>
+      <button id="btn-pause" aria-label="pausa">❚❚</button>
+    </div>
+    <button id="btn-skip" hidden>PULAR ▶▶</button>
+    <div id="menu" hidden></div>
+
+    <div id="rotate" hidden>
+      <div class="phone"><span>💩</span></div>
+      <p>Vire o celular<br>para jogar!</p>
+    </div>
+  </div>
+  <noscript>Este jogo precisa de JavaScript.</noscript>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

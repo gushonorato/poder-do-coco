@@ -1,0 +1,8 @@
+.DS_Store
+node_modules/
+.playwright-mcp/
+.work/
+tools/_shots/
+
+# fotos e áudios pessoais usados só como referência (não publicar)
+referencias/
