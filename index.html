@@ -37,10 +37,29 @@
     </div>
 
     <div id="topbar" hidden>
+      <button id="btn-fs" aria-label="tela cheia" hidden>
+        <svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" /></svg>
+      </button>
       <button id="btn-mute" aria-label="som">🔊</button>
       <button id="btn-pause" aria-label="pausa">❚❚</button>
     </div>
     <button id="btn-skip" hidden>PULAR ▶▶</button>
+    <button id="btn-install" hidden>📲 INSTALAR</button>
+    <div id="install-help" hidden>
+      <div class="card">
+        <h2>Instalar no iPhone</h2>
+        <ol>
+          <li>Toque em
+            <svg viewBox="0 0 24 24" class="ico"><path d="M12 3v12M7 8l5-5 5 5M5 12v8h14v-8" /></svg>
+            <b>Compartilhar</b> na barra do navegador.</li>
+          <li>Escolha <b>“Adicionar à Tela de Início”</b>
+            <svg viewBox="0 0 24 24" class="ico"><path d="M5 5h14v14H5zM12 8.5v7M8.5 12h7" /></svg></li>
+          <li>Toque em <b>Adicionar</b>.</li>
+        </ol>
+        <p>Depois é só abrir o <b>Poder do Cocô</b> pelo ícone 💩 na tela inicial: ele abre em <b>tela cheia</b> e funciona até sem internet!</p>
+        <button id="install-ok">ENTENDI!</button>
+      </div>
+    </div>
     <div id="menu" hidden></div>
 
     <div id="rotate" hidden>

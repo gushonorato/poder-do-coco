@@ -45,7 +45,8 @@ html, body {
   inset: 0;
   pointer-events: none;
 }
-#controls[hidden], #topbar[hidden], #menu[hidden], #rotate[hidden], #btn-skip[hidden] { display: none; }
+#controls[hidden], #topbar[hidden], #menu[hidden], #rotate[hidden], #btn-skip[hidden],
+#topbar button[hidden], #btn-install[hidden], #install-help[hidden] { display: none; }
 
 .btn {
   pointer-events: auto;
@@ -138,6 +139,79 @@ html, body {
   top: calc(env(safe-area-inset-top, 0px) + 2vh);
   right: calc(var(--safe-r) + 2vw);
   letter-spacing: 1px;
+}
+
+#btn-fs svg {
+  width: 60%;
+  height: 60%;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vertical-align: middle;
+}
+
+/* ------------------------------------------------ instalar (Android: prompt; iPhone: instruções) */
+#btn-install {
+  position: absolute;
+  top: calc(env(safe-area-inset-top, 0px) + 2vh);
+  left: calc(var(--safe-l) + 2vw);
+  font: 900 clamp(13px, 4.4vh, 20px) / 1 "Trebuchet MS", system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--gold);
+  border: 3px solid var(--ink);
+  border-radius: 999px;
+  padding: 0.45em 0.9em;
+  box-shadow: 0 4px 0 var(--ink);
+}
+#btn-install:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--ink); }
+#install-help {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  background: rgba(10, 5, 16, 0.7);
+  padding: 3vh 4vw;
+}
+#install-help .card {
+  max-width: 560px;
+  max-height: 94vh;
+  overflow: auto;
+  background: #fff8e6;
+  color: var(--ink);
+  border: 4px solid var(--ink);
+  border-radius: 18px;
+  box-shadow: 0 6px 0 var(--ink);
+  padding: 2.5vh 22px 3vh;
+  font: 600 clamp(13px, 4.2vh, 18px) / 1.35 "Trebuchet MS", system-ui, sans-serif;
+  text-align: left;
+}
+#install-help h2 { margin: 0 0 1vh; font-size: 1.35em; font-weight: 900; }
+#install-help ol { margin: 0 0 1.2vh; padding-left: 1.3em; }
+#install-help li { margin: 0.35em 0; }
+#install-help p { margin: 0 0 1.6vh; }
+#install-help .ico {
+  width: 1.3em;
+  height: 1.3em;
+  vertical-align: -0.3em;
+  fill: none;
+  stroke: #1a73e8;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+#install-ok {
+  display: block;
+  margin: 0 auto;
+  font: 900 1.1em / 1 "Trebuchet MS", system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--gold);
+  border: 3px solid var(--ink);
+  border-radius: 12px;
+  padding: 0.5em 1.6em;
+  box-shadow: 0 4px 0 var(--ink);
 }
 
 /* ------------------------------------------------ menus */

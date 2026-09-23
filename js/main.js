@@ -12,6 +12,37 @@ import { EndingScene } from './scenes/ending.js';
 const STEP = 1 / 60;
 const SAVE_KEY = 'pdc_save';
 
+// Tela cheia: Android e iPad deixam o site ocupar a tela toda; iPhone não
+// (lá só dá para ter tela cheia adicionando à Tela de Início).
+const FS_SUPPORTED = !!(document.fullscreenEnabled || document.webkitFullscreenEnabled);
+const isFullscreen = () => !!(document.fullscreenElement || document.webkitFullscreenElement);
+const isStandalone = () =>
+  navigator.standalone === true || matchMedia('(display-mode: standalone)').matches || matchMedia('(display-mode: fullscreen)').matches;
+function enterFullscreen() {
+  const el = document.documentElement;
+  const fn = el.requestFullscreen || el.webkitRequestFullscreen;
+  try {
+    const p = fn?.call(el, { navigationUI: 'hide' });
+    p?.then?.(() => screen.orientation?.lock?.('landscape').catch(() => {})).catch(() => {});
+  } catch {
+    /* sem suporte: tudo bem */
+  }
+}
+
+// Instalar como app: Android/Chrome oferece a janela de instalação
+// (beforeinstallprompt); no iPhone/iPad mostramos o passo a passo.
+const IS_IOS = /iPhone|iPad|iPod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+let installPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  installPrompt = e;
+  updateControls();
+});
+window.addEventListener('appinstalled', () => {
+  installPrompt = null;
+  updateControls();
+});
+
 // Celular/tablet? Vários sinais, porque cada navegador expõe coisas diferentes.
 function detectTouch() {
   const mq = (q) => window.matchMedia && matchMedia(q).matches;
@@ -78,20 +109,11 @@ const game = {
     }
   },
   // Primeiro toque do usuário: libera áudio, tela cheia e paisagem.
+  // Toque em JOGAR/FASE 2: libera o áudio e, no celular, entra em tela cheia.
   firstGesture() {
     audio.unlock();
-    if (this.gestured) return;
     this.gestured = true;
-    if (this.touch) {
-      const el = document.documentElement;
-      const fs = el.requestFullscreen || el.webkitRequestFullscreen;
-      try {
-        const p = fs?.call(el, { navigationUI: 'hide' });
-        p?.then?.(() => screen.orientation?.lock?.('landscape').catch(() => {})).catch(() => {});
-      } catch {
-        /* iOS não tem tela cheia para páginas */
-      }
-    }
+    if (this.touch && FS_SUPPORTED && !isFullscreen() && !isStandalone()) enterFullscreen();
   },
   setHint(on) {
     $('.btn.poop').classList.toggle('hint', !!on);
@@ -157,8 +179,13 @@ window.__game = game; // útil para depurar no console
 
 function updateControls() {
   const playing = game.scene?.wantsControls && !game.paused;
+  const inPlay = game.scene instanceof PlayScene;
+  const inTitle = game.scene instanceof TitleScene;
   $('#controls').hidden = !(playing && game.touch);
-  $('#topbar').hidden = !(game.scene instanceof PlayScene) || game.paused;
+  $('#topbar').hidden = !((inPlay && !game.paused) || inTitle);
+  $('#btn-pause').hidden = !inPlay;
+  $('#btn-fs').hidden = !(game.touch && FS_SUPPORTED && !isFullscreen() && !isStandalone());
+  $('#btn-install').hidden = !(inTitle && !isStandalone() && (installPrompt || IS_IOS));
 }
 
 // ------------------------------------------------------------------ tela
@@ -286,6 +313,31 @@ async function boot() {
   // Qualquer toque libera o áudio (política dos navegadores).
   root.addEventListener('pointerup', () => audio.unlock(), { passive: true });
   window.addEventListener('keydown', () => audio.unlock(), { once: false });
+
+  $('#btn-fs').addEventListener('click', (e) => {
+    e.stopPropagation();
+    audio.unlock();
+    enterFullscreen();
+  });
+  for (const ev of ['fullscreenchange', 'webkitfullscreenchange']) document.addEventListener(ev, () => { updateControls(); resize(); });
+  $('#btn-install').addEventListener('click', (e) => {
+    e.stopPropagation();
+    audio.unlock();
+    audio.sfx('select');
+    if (IS_IOS) {
+      $('#install-help').hidden = false;
+    } else if (installPrompt) {
+      installPrompt.prompt();
+      installPrompt.userChoice.finally(() => {
+        installPrompt = null;
+        updateControls();
+      });
+    }
+  });
+  $('#install-ok').addEventListener('click', (e) => {
+    e.stopPropagation();
+    $('#install-help').hidden = true;
+  });
 
   $('#btn-pause').addEventListener('click', (e) => {
     e.stopPropagation();
