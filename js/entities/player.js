@@ -164,7 +164,6 @@ export class Player {
     audio.sfx('fart', { pitch: big ? 0.8 : 1 });
     // nuvenzinha de pum atrás do bumbum + "PUM!" de vez em quando
     world.fx.puff(b.x + this.facing * 3, b.y + 1, this.facing, big ? 8 : 5);
-    world.fx.sprite(b.x + this.facing * 6, b.y, ART.item.cloudFart[0], { vx: this.facing * 0.35, vy: -0.2, g: 0, life: 16, drag: 0.93 });
     if (Math.random() < 0.3) world.fx.popup(b.x - this.facing * 4, b.y - 10, 'PUM!', '#b8f5a0', { life: 30 });
   }
   draw(ctx, camX, camY) {
