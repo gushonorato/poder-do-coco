@@ -185,7 +185,7 @@ function updateControls() {
   $('#topbar').hidden = !((inPlay && !game.paused) || inTitle);
   $('#btn-pause').hidden = !inPlay;
   $('#btn-fs').hidden = !(game.touch && FS_SUPPORTED && !isFullscreen() && !isStandalone());
-  $('#btn-install').hidden = !(inTitle && !isStandalone() && (installPrompt || IS_IOS));
+  $('#btn-install').hidden = !(inTitle && !isStandalone() && (installPrompt || IS_IOS || game.touch));
 }
 
 // ------------------------------------------------------------------ tela
@@ -324,14 +324,18 @@ async function boot() {
     e.stopPropagation();
     audio.unlock();
     audio.sfx('select');
-    if (IS_IOS) {
-      $('#install-help').hidden = false;
-    } else if (installPrompt) {
+    const help = $('#install-help');
+    if (!IS_IOS && installPrompt) {
+      // Android/Chrome: janela de instalação do próprio navegador
       installPrompt.prompt();
       installPrompt.userChoice.finally(() => {
         installPrompt = null;
         updateControls();
       });
+    } else {
+      // iPhone, ou Android que ainda não liberou a instalação: passo a passo
+      help.dataset.os = IS_IOS ? 'ios' : 'android';
+      help.hidden = false;
     }
   });
   $('#install-ok').addEventListener('click', (e) => {

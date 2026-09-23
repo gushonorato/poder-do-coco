@@ -47,15 +47,25 @@
     <button id="btn-install" hidden>📲 INSTALAR</button>
     <div id="install-help" hidden>
       <div class="card">
-        <h2>Instalar no iPhone</h2>
-        <ol>
-          <li>Toque em
-            <svg viewBox="0 0 24 24" class="ico"><path d="M12 3v12M7 8l5-5 5 5M5 12v8h14v-8" /></svg>
-            <b>Compartilhar</b> na barra do navegador.</li>
-          <li>Escolha <b>“Adicionar à Tela de Início”</b>
-            <svg viewBox="0 0 24 24" class="ico"><path d="M5 5h14v14H5zM12 8.5v7M8.5 12h7" /></svg></li>
-          <li>Toque em <b>Adicionar</b>.</li>
-        </ol>
+        <div class="only-ios">
+          <h2>Instalar no iPhone</h2>
+          <ol>
+            <li>Toque em
+              <svg viewBox="0 0 24 24" class="ico"><path d="M12 3v12M7 8l5-5 5 5M5 12v8h14v-8" /></svg>
+              <b>Compartilhar</b> na barra do navegador.</li>
+            <li>Escolha <b>“Adicionar à Tela de Início”</b>
+              <svg viewBox="0 0 24 24" class="ico"><path d="M5 5h14v14H5zM12 8.5v7M8.5 12h7" /></svg></li>
+            <li>Toque em <b>Adicionar</b>.</li>
+          </ol>
+        </div>
+        <div class="only-android">
+          <h2>Instalar no Android</h2>
+          <ol>
+            <li>Toque no menu <b>⋮</b> do navegador (canto de cima).</li>
+            <li>Escolha <b>“Instalar app”</b> ou <b>“Adicionar à tela inicial”</b>.</li>
+            <li>Confirme em <b>Instalar</b>.</li>
+          </ol>
+        </div>
         <p>Depois é só abrir o <b>Poder do Cocô</b> pelo ícone 💩 na tela inicial: ele abre em <b>tela cheia</b> e funciona até sem internet!</p>
         <button id="install-ok">ENTENDI!</button>
       </div>

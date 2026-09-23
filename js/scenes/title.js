@@ -6,6 +6,7 @@ import { ART, frameOf } from '../art.js';
 import { SCREEN_GROUND, drawGroundStrip, drawScaled, beginWorld, endWorld } from './common.js';
 import { audio } from '../audio.js';
 import { FX } from '../fx.js';
+import { VERSION } from '../version.js';
 
 // Letras do logo: contorno fino escuro + sombra colorida (efeito 3D).
 function logo(ctx, text, x, y, scale, color, shadow) {
@@ -153,6 +154,8 @@ export class TitleScene {
     }
     this.fx.draw(ctx, camX, 0);
     endWorld(ctx);
+
+    drawText(ctx, 'V ' + VERSION, W - 3, this.game.viewH - 6, { align: 'right', scale: 0.5, color: 'rgba(255,255,255,0.7)' });
 
     // Logo (gerado por IA); sem ele, texto em pixel
     const bob = Math.round(Math.sin(this.t * 0.05) * 2);

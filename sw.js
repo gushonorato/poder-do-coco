@@ -1,5 +1,5 @@
 // Gerado por tools/build_sw.py — não edite à mão.
-const CACHE = 'poder-do-coco-5ffbee1564';
+const CACHE = 'poder-do-coco-73f0743e11';
 const FILES = [
  "./",
  "index.html",
@@ -27,6 +27,7 @@ const FILES = [
  "js/scenes/intro.js",
  "js/scenes/play.js",
  "js/scenes/title.js",
+ "js/version.js",
  "js/voices.js",
  "js/world/level.js",
  "js/world/levels.js",
@@ -73,7 +74,12 @@ const FILES = [
 ];
 
 self.addEventListener('install', (e) => {
-  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(FILES)).then(() => self.skipWaiting()));
+  // cache: 'reload' = baixa da rede, sem aproveitar cópias antigas do navegador
+  e.waitUntil(
+    caches.open(CACHE)
+      .then((c) => c.addAll(FILES.map((f) => new Request(f, { cache: 'reload' }))))
+      .then(() => self.skipWaiting())
+  );
 });
 self.addEventListener('activate', (e) => {
   e.waitUntil(
@@ -82,5 +88,12 @@ self.addEventListener('activate', (e) => {
 });
 self.addEventListener('fetch', (e) => {
   if (e.request.method !== 'GET') return;
+  // a página (index.html) tenta a rede primeiro, para achar versões novas; sem internet usa a cópia
+  if (e.request.mode === 'navigate') {
+    e.respondWith(
+      fetch(e.request, { cache: 'no-store' }).catch(() => caches.match('index.html'))
+    );
+    return;
+  }
   e.respondWith(caches.match(e.request, { ignoreSearch: true }).then((r) => r || fetch(e.request)));
 });

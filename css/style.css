@@ -189,6 +189,7 @@ html, body {
   text-align: left;
 }
 #install-help h2 { margin: 0 0 1vh; font-size: 1.35em; font-weight: 900; }
+#install-help[data-os="ios"] .only-android, #install-help[data-os="android"] .only-ios { display: none; }
 #install-help ol { margin: 0 0 1.2vh; padding-left: 1.3em; }
 #install-help li { margin: 0.35em 0; }
 #install-help p { margin: 0 0 1.6vh; }
