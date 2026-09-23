@@ -12,6 +12,7 @@ for folder in ['css', 'js', 'assets']:
         if p.is_file() and not p.name.startswith('.'):
             files.append(p.relative_to(ROOT).as_posix())
 h = hashlib.sha1()
+h.update(Path(__file__).read_bytes())  # mudanças no próprio service worker também mudam a versão
 for f in files[1:]:
     if f == 'js/version.js':
         continue
