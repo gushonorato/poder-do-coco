@@ -38,14 +38,10 @@ self.addEventListener('activate', (e) => {{
 }});
 self.addEventListener('fetch', (e) => {{
   if (e.request.method !== 'GET') return;
-  // a página (index.html) tenta a rede primeiro, para achar versões novas; sem internet usa a cópia
-  if (e.request.mode === 'navigate') {{
-    e.respondWith(
-      fetch(e.request, {{ cache: 'no-store' }}).catch(() => caches.match('index.html'))
-    );
-    return;
-  }}
-  e.respondWith(caches.match(e.request, {{ ignoreSearch: true }}).then((r) => r || fetch(e.request)));
+  // Tudo sai do cache desta versão (conjunto consistente de arquivos). Quando uma
+  // versão nova é publicada, o service worker novo baixa tudo e a página recarrega sozinha.
+  const req = e.request.mode === 'navigate' ? 'index.html' : e.request;
+  e.respondWith(caches.match(req, {{ ignoreSearch: true }}).then((r) => r || fetch(e.request)));
 }});
 """
 (ROOT / 'sw.js').write_text(sw)
