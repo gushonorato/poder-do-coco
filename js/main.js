@@ -312,7 +312,16 @@ async function boot() {
   requestAnimationFrame(frame);
 
   if ('serviceWorker' in navigator && !/^(localhost|127\.|192\.168\.|10\.)/.test(location.hostname)) {
-    navigator.serviceWorker.register('sw.js').catch(() => {});
+    // Versão nova publicada: quando o service worker novo assume, recarrega uma vez
+    // (só se já havia uma versão antiga controlando a página, e fora das fases).
+    const hadController = !!navigator.serviceWorker.controller;
+    let reloaded = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (!hadController || reloaded) return;
+      reloaded = true;
+      if (!(game.scene instanceof PlayScene)) location.reload();
+    });
+    navigator.serviceWorker.register('sw.js').then((reg) => reg.update()).catch(() => {});
   }
 }
 

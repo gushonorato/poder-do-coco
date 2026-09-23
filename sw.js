@@ -1,5 +1,5 @@
 // Gerado por tools/build_sw.py — não edite à mão.
-const CACHE = 'poder-do-coco-1698e713f7';
+const CACHE = 'poder-do-coco-7b38ae6c45';
 const FILES = [
  "./",
  "index.html",
